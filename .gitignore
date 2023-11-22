@@ -1,14 +1,32 @@
 .gradle
-build/
+**/build/
+!src/**/build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Avoid ignore Gradle wrappper properties
+!gradle-wrapper.properties
+
+# Cache of project
+.gradletasknamecache
+
+# Eclipse
+.project
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+HELP.md
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
 ### STS ###
 .apt_generated
-.classpath
 .factorypath
-.project
 .settings
 .springBeans
 .sts4-cache

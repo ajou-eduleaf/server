@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "group")
+@Table(name = "group_table")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Group {

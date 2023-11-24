@@ -16,6 +16,12 @@ public class Parent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(length = 20, nullable = false)
+    private String parentId;
+
+    @Column(length = 20, nullable = false)
+    private String parentPw;
+
     @Column(length = 10, nullable = false)
     private String name;
 

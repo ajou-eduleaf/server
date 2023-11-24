@@ -2,6 +2,7 @@ package com.eduleaf.DBproject.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +32,9 @@ public class Academy {
 
     @OneToMany(mappedBy = "academy", fetch = FetchType.LAZY)
     private List<Student> students = new ArrayList<>();
+
+    @Builder
+    public Academy(String name) {
+        this.name = name;
+    }
 }

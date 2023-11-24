@@ -36,10 +36,12 @@ public class Parent {
     private Student student;
 
     @Builder
-    public Parent(String name, String phoneNumber, String relation, Student student) {
+    public Parent(String name, String phoneNumber, String relation, Student student, String parentId, String parentPw) {
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.relation = relation == null ? "" : relation;
+        this.relation = relation;
         this.student = student;
+        this.parentId = parentId;
+        this.parentPw = parentPw;
     }
 }

@@ -73,12 +73,17 @@ public class AccountService {
                     throw new IllegalStateException("존재하지 않는 학원입니다.");
                 });
 
+        Teacher teacher = teacherRepository.findTeacherByTeacherName(groupFormDto.getTeacherName())
+                .orElseThrow(() -> {
+                    throw new IllegalStateException("존재하지 않는 학원입니다.");
+                });
+
         groupRepository.findGroupByName(groupFormDto.getName())
                 .ifPresent((group) -> {
                     throw new IllegalStateException("이미 존재하는 반입니다.");
                 });
 
-        Group group = groupFormDto.toEntity(academy);
+        Group group = groupFormDto.toEntity(academy, teacher);
         groupRepository.save(group);
     }
 

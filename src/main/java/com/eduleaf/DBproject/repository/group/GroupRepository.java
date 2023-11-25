@@ -20,8 +20,5 @@ public class GroupRepository {
     public Optional<Group> findGroupByName(String name){
         return groupJpaRepository.findGroupByName(name);
     }
-
-
-
 }
 

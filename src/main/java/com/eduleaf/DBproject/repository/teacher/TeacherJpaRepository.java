@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TeacherJpaRepository extends JpaRepository <Teacher, Integer> {
     Optional<Teacher> findTeacherByTeachId(String teachId);
+    Optional<Teacher> findTeacherByName(String teacherName);
 }

@@ -20,5 +20,9 @@ public class TeacherRepository {
     public Optional<Teacher> findTeacherByTeacherId(String teacherId){
         return teacherJpaRepository.findTeacherByTeachId(teacherId);
     }
+
+    public Optional<Teacher> findTeacherByTeacherName(String teacherName){
+        return teacherJpaRepository.findTeacherByName(teacherName);
+    }
 }
 

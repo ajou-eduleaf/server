@@ -17,8 +17,8 @@ public class StudentRepository {
         return studentJpaRepository.save(student);
     }
 
-    public Optional<Student> findStudentByBojId(final String bojId) {
-        return studentJpaRepository.findStudentByBojId(bojId);
+    public Optional<Student> findByBojId(final String bojId) {
+        return studentJpaRepository.findByBojId(bojId);
     }
 
     public Optional<Student> findStudentByStudentId(final String studentId) {

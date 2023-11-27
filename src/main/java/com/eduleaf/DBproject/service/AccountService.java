@@ -99,7 +99,7 @@ public class AccountService {
                     throw new IllegalStateException("존재하지 않는 반입니다.");
                 });
 
-        studentRepository.findStudentByBojId(studentSignUpFormDto.getBojId())
+        studentRepository.findByBojId(studentSignUpFormDto.getBojId())
                 .ifPresent((student) -> {
                     throw new IllegalStateException("이미 존재하는 학생입니다.");
                 });

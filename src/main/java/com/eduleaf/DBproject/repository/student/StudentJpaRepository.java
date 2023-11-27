@@ -5,8 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StudentJpaRepository extends JpaRepository<Student, Integer> {
-
-    Optional<Student> findStudentByBojId(final String bojId);
+    Optional<Student> findByBojId(final String bojId);
 
     Optional <Student> findStudentByStudentId(final String studentId);
 }

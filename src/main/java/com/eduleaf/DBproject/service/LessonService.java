@@ -16,7 +16,7 @@ import com.eduleaf.DBproject.repository.lesson.LessonRepository;
 import com.eduleaf.DBproject.repository.lessonproblem.LessonProblemRepository;
 import com.eduleaf.DBproject.repository.parent.ParentRepository;
 import com.eduleaf.DBproject.repository.problem.ProblemRepository;
-import com.eduleaf.DBproject.repository.stdentproblem.StudentProblemRepository;
+import com.eduleaf.DBproject.repository.studentProblem.StudentProblemRepository;
 import com.eduleaf.DBproject.repository.student.StudentRepository;
 import com.eduleaf.DBproject.repository.studentlesson.StudentLessonRepository;
 import java.util.ArrayList;

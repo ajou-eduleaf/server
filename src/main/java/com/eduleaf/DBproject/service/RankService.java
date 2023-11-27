@@ -34,6 +34,7 @@ public class RankService {
 
 
         List<RankResponseDto> response = new ArrayList<>();
+        List<Object[]> studentProblemCounts;
 
         //academy가 존재하는지 확인
         Optional<Academy> academy = this.academyRepository.findById(academyId);
@@ -42,35 +43,40 @@ public class RankService {
         switch(type){
 
             case "today":
+                //지정된 academy 내의 모든 학생들의 문제 푼 개수 정보를 얻음 -> groupby + count(*)
+                studentProblemCounts = this.studentProblemRepository.getTodayStudentProblemCount(academyId);
                 break;
 
             case "month":
+                //지정된 academy 내의 모든 학생들의 문제 푼 개수 정보를 얻음 -> groupby + count(*)
+                studentProblemCounts = this.studentProblemRepository.getMonthStudentProblemCount(academyId);
                 break;
 
             case "total":
 
                 //지정된 academy 내의 모든 학생들의 문제 푼 개수 정보를 얻음 -> groupby + count(*)
-                List<Object[]> allStudentProblemCount = this.studentProblemRepository.getAllStudentProblemCount(academyId);
-
-
-                //RankResponseDto 형태로 가공해서 반환
-                for(Object[] one : allStudentProblemCount.stream().toList()){
-
-                    List<Object> listOne = Arrays.stream(one).toList();
-                    String bojId = listOne.get(0).toString();
-                    Integer solved = Integer.valueOf(listOne.get(1).toString());
-
-                    RankResponseDto rankResponseDto =  RankResponseDto.builder()
-                            .bojId(bojId)
-                            .solved(solved)
-                            .build();
-
-                    response.add(rankResponseDto);
-                }
+                studentProblemCounts = this.studentProblemRepository.getAllStudentProblemCount(academyId);
                 break;
 
             default:
+                //type 이상하면 그냥 total로 해버림
+                studentProblemCounts = this.studentProblemRepository.getAllStudentProblemCount(academyId);
                 break;
+        }
+
+        //RankResponseDto 형태로 가공해서 반환
+        for(Object[] one : studentProblemCounts.stream().toList()){
+
+            List<Object> listOne = Arrays.stream(one).toList();
+            String bojId = listOne.get(0).toString();
+            Integer solved = Integer.valueOf(listOne.get(1).toString());
+
+            RankResponseDto rankResponseDto =  RankResponseDto.builder()
+                    .bojId(bojId)
+                    .solved(solved)
+                    .build();
+
+            response.add(rankResponseDto);
         }
 
         return response;

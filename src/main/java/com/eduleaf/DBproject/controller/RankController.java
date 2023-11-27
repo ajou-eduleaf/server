@@ -18,8 +18,8 @@ public class RankController {
     }
 
     @GetMapping("/show")
-    public Object rank(@RequestParam String type, @RequestParam Integer academyId){
-        return rankService.rank(type, academyId);
+    public List<RankResponseDto> rank(@RequestParam String type, @RequestParam String location){
+        return rankService.rank(type, location);
     }
 
 }

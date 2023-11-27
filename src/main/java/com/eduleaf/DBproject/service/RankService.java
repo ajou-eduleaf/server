@@ -30,37 +30,37 @@ public class RankService {
         this.studentProblemRepository = studentProblemRepository;
     }
 
-    public Object rank(String type, Integer academyId) {
+    public List<RankResponseDto> rank(String type, String location) {
 
 
         List<RankResponseDto> response = new ArrayList<>();
         List<Object[]> studentProblemCounts;
 
         //academy가 존재하는지 확인
-        Optional<Academy> academy = this.academyRepository.findById(academyId);
+        Optional<Academy> academy = this.academyRepository.findByAcademyName(location);
         if(academy.isEmpty()) return response;
 
         switch(type){
 
             case "today":
                 //지정된 academy 내의 모든 학생들의 문제 푼 개수 정보를 얻음 -> groupby + count(*)
-                studentProblemCounts = this.studentProblemRepository.getTodayStudentProblemCount(academyId);
+                studentProblemCounts = this.studentProblemRepository.getTodayStudentProblemCount(location);
                 break;
 
             case "month":
                 //지정된 academy 내의 모든 학생들의 문제 푼 개수 정보를 얻음 -> groupby + count(*)
-                studentProblemCounts = this.studentProblemRepository.getMonthStudentProblemCount(academyId);
+                studentProblemCounts = this.studentProblemRepository.getMonthStudentProblemCount(location);
                 break;
 
             case "total":
 
                 //지정된 academy 내의 모든 학생들의 문제 푼 개수 정보를 얻음 -> groupby + count(*)
-                studentProblemCounts = this.studentProblemRepository.getAllStudentProblemCount(academyId);
+                studentProblemCounts = this.studentProblemRepository.getAllStudentProblemCount(location);
                 break;
 
             default:
                 //type 이상하면 그냥 total로 해버림
-                studentProblemCounts = this.studentProblemRepository.getAllStudentProblemCount(academyId);
+                studentProblemCounts = this.studentProblemRepository.getAllStudentProblemCount(location);
                 break;
         }
 

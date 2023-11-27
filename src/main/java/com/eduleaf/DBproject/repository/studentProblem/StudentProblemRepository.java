@@ -22,16 +22,16 @@ public class StudentProblemRepository {
     }
 
 
-    public List<Object[]> getAllStudentProblemCount(Integer academyId){
-        return studentProblemJpaRepository.getAllStudentProblemCount(academyId);
+    public List<Object[]> getAllStudentProblemCount(String location){
+        return studentProblemJpaRepository.getAllStudentProblemCount(location);
     }
 
-    public List<Object[]> getTodayStudentProblemCount(Integer academyId){
-        return studentProblemJpaRepository.getTodayStudentProblemCount(academyId);
+    public List<Object[]> getTodayStudentProblemCount(String location){
+        return studentProblemJpaRepository.getTodayStudentProblemCount(location);
     }
 
-    public List<Object[]> getMonthStudentProblemCount(Integer academyId){
-        return studentProblemJpaRepository.getMonthStudentProblemCount(academyId);
+    public List<Object[]> getMonthStudentProblemCount(String location){
+        return studentProblemJpaRepository.getMonthStudentProblemCount(location);
     }
 
     public Optional<List<StudentProblem>> findByStudent(Student student){

@@ -7,12 +7,14 @@ import com.eduleaf.DBproject.domain.Problem;
 import com.eduleaf.DBproject.domain.Student;
 import com.eduleaf.DBproject.domain.StudentLesson;
 import com.eduleaf.DBproject.domain.StudentProblem;
+import com.eduleaf.DBproject.dto.LessonInfoRequestFormDto;
 import com.eduleaf.DBproject.dto.LessonInfoResponseDto;
 import com.eduleaf.DBproject.dto.ProblemSolvingStatusDto;
 import com.eduleaf.DBproject.dto.StudentInfoDto;
 import com.eduleaf.DBproject.repository.group.GroupRepository;
 import com.eduleaf.DBproject.repository.lesson.LessonRepository;
 import com.eduleaf.DBproject.repository.lessonproblem.LessonProblemRepository;
+import com.eduleaf.DBproject.repository.parent.ParentRepository;
 import com.eduleaf.DBproject.repository.problem.ProblemRepository;
 import com.eduleaf.DBproject.repository.stdentproblem.StudentProblemRepository;
 import com.eduleaf.DBproject.repository.student.StudentRepository;
@@ -33,11 +35,12 @@ public class LessonService {
     private final ProblemRepository problemRepository;
     private final LessonProblemRepository lessonProblemRepository;
     private final StudentProblemRepository studentProblemRepository;
+    private final ParentRepository parentRepository;
 
     public LessonService(LessonRepository lessonRepository, StudentRepository studentRepository,
                          StudentLessonRepository studentLessonRepository, GroupRepository groupRepository,
                          ProblemRepository problemRepository, LessonProblemRepository lessonProblemRepository,
-                         StudentProblemRepository studentProblemRepository) {
+                         StudentProblemRepository studentProblemRepository, ParentRepository parentRepository) {
         this.lessonRepository = lessonRepository;
         this.studentRepository = studentRepository;
         this.studentLessonRepository = studentLessonRepository;
@@ -45,6 +48,7 @@ public class LessonService {
         this.problemRepository = problemRepository;
         this.lessonProblemRepository = lessonProblemRepository;
         this.studentProblemRepository = studentProblemRepository;
+        this.parentRepository = parentRepository;
     }
 
     public void toggleStudentAttendanceOfLesson(int lessonId, String studentBojId) {
@@ -93,7 +97,6 @@ public class LessonService {
         }
     }
 
-    @Transactional
     public void addProblemToLesson(int lessonId, String problemId) {
         Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> {
             throw new IllegalArgumentException("존재하지 않는 수업입니다.");
@@ -105,12 +108,22 @@ public class LessonService {
             return newProblem;
         });
 
+        List<LessonProblem> lessonProblems = lessonProblemRepository.findLessonProblemByLesson(lesson).orElseThrow(() -> {
+            throw new IllegalArgumentException("수업에 해당하는 문제가 없습니다.");
+        });
+
+        for (LessonProblem lessonProblem : lessonProblems) {
+            if (lessonProblem.getProblem().equals(problem)) {
+                throw new IllegalStateException("이미 등록된 문제입니다.");
+            }
+        }
+
         LessonProblem lessonProblem = new LessonProblem(lesson, problem);
         lessonProblemRepository.save(lessonProblem);
     }
 
     @Transactional
-    public LessonInfoResponseDto getLessonInfo(int lessonId, String type) {
+    public LessonInfoResponseDto getLessonInfo(int lessonId, LessonInfoRequestFormDto lessonInfoRequestFormDto) {
         Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> {
             throw new IllegalArgumentException("존재하지 않는 수업입니다.");
         });
@@ -124,28 +137,103 @@ public class LessonService {
         }).stream().map(LessonProblem::getProblem).map(Problem::getProblemNo).map(Integer::parseInt).toList();
 
         LessonInfoResponseDto lessonInfoResponseDto = new LessonInfoResponseDto();
+        String type = lessonInfoRequestFormDto.getType();
 
-        // for teacher
-        for (StudentLesson studentLesson : studentLessonList) {
+        if (type.equals("teacher")) {
+            for (StudentLesson studentLesson : studentLessonList) {
+
+                boolean attendance = studentLesson.isAttendance();
+                Student student = studentLesson.getStudent();
+                String studentId = student.getStudentId();
+                String studentBojId = student.getBojId();
+                String studentName = student.getName();
+                String groupName = student.getGroup().getName();
+                ProblemSolvingStatusDto problemSolvingStatusDto = checkProblemsDone(todayProblems, student);
+
+                StudentInfoDto studentInfoDto = StudentInfoDto
+                        .builder()
+                        .bojId(studentBojId)
+                        .name(studentName)
+                        .problemSolvingStatusDto(problemSolvingStatusDto)
+                        .isAttendance(attendance)
+                        .groupName(groupName)
+                        .build();
+
+                lessonInfoResponseDto.addStudentInfo(studentId, studentInfoDto);
+            }
+        } else if (type.equals("student")) {
+            String id = lessonInfoRequestFormDto.getId();
+            Student student = studentRepository.findStudentByStudentId(id)
+                    .orElseThrow(() -> {
+                        throw new IllegalStateException("존재하지 않는 학생입니다.");
+                    });
+            // studentLessonList에서 해당 학생의 수업만 찾아서 그 수업의 출석 여부를 가져온다.
+            StudentLesson studentLesson = studentLessonList.stream()
+                    .filter(sl -> sl.getStudent().equals(student))
+                    .findFirst()
+                    .orElseThrow(() -> {
+                        throw new IllegalStateException("존재하지 않는 학생입니다.");
+                    });
+
             boolean attendance = studentLesson.isAttendance();
-            Student student = studentLesson.getStudent();
             String studentId = student.getStudentId();
             String studentBojId = student.getBojId();
             String studentName = student.getName();
-            ProblemSolvingStatusDto problemSolvingStatusDto = checkProblemsDone(todayProblems, student);
             String groupName = student.getGroup().getName();
 
-            StudentInfoDto studentInfoDto = StudentInfoDto.builder().bojId(studentBojId).name(studentName)
-                    .problemSolvingStatusDto(problemSolvingStatusDto).isAttendance(attendance).groupName(groupName)
+            ProblemSolvingStatusDto problemSolvingStatusDto = checkProblemsDone(todayProblems, student);
+
+            StudentInfoDto studentInfoDto = StudentInfoDto.builder()
+                    .bojId(studentBojId)
+                    .name(studentName)
+                    .problemSolvingStatusDto(problemSolvingStatusDto)
+                    .isAttendance(attendance)
+                    .groupName(groupName)
                     .build();
+
             lessonInfoResponseDto.addStudentInfo(studentId, studentInfoDto);
+        } else if (type.equals("parent")) {
+            String parent_id = lessonInfoRequestFormDto.getId();
+            Student student = parentRepository.findParentByParentId(parent_id).orElseThrow(
+                    () -> {
+                        throw new IllegalStateException("존재하지 않는 부모입니다.");
+                    }
+            ).getStudent();
+
+            StudentLesson studentLesson = studentLessonList.stream()
+                    .filter(sl -> sl.getStudent().equals(student))
+                    .findFirst()
+                    .orElseThrow(() -> {
+                        throw new IllegalStateException("존재하지 않는 학생입니다.");
+                    });
+
+            boolean attendance = studentLesson.isAttendance();
+            String studentBojId = student.getBojId();
+            String studentName = student.getName();
+            String groupName = student.getGroup().getName();
+
+            ProblemSolvingStatusDto problemSolvingStatusDto = checkProblemsDone(todayProblems, student);
+
+            StudentInfoDto studentInfoDto = StudentInfoDto.builder()
+                    .bojId(studentBojId)
+                    .name(studentName)
+                    .problemSolvingStatusDto(problemSolvingStatusDto)
+                    .isAttendance(attendance)
+                    .groupName(groupName)
+                    .build();
+
+            lessonInfoResponseDto.addStudentInfo(parent_id, studentInfoDto);
+        } else {
+            throw new IllegalStateException("존재하지 않는 사용자입니다.");
         }
 
         return lessonInfoResponseDto;
     }
 
     private ProblemSolvingStatusDto checkProblemsDone(List<Integer> todayProblems, Student student) {
-        List<StudentProblem> studentProblems = studentProblemRepository.findByStudent(student);
+        List<StudentProblem> studentProblems = studentProblemRepository.findByStudent(student).orElseThrow(() -> {
+            throw new IllegalStateException("존재하지 않는 학생입니다.");
+        });
         Set<Integer> solvedProblemsNo = studentProblems.stream()
                 .map(sp -> Integer.parseInt(sp.getProblem().getProblemNo())).collect(Collectors.toSet());
 

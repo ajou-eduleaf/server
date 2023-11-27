@@ -27,24 +27,25 @@ public class test {
 
     static class StudentRepository {
         public final Map<String, String> studentRepository;
-                    // StudentID, StudentName
+        // StudentID, StudentName
 
         public StudentRepository() {
             this.studentRepository = new HashMap<>();
             studentRepository.put("sangjuntest", "박상준");
         }
 
-        public String getValue(String studentId){
+        public String getValue(String studentId) {
             return this.studentRepository.get(studentId);
         }
     }
 
     static class ToDoProblemRepository {
         public final Map<String, List<String>> todoProblemRepository;
-                        // 반 이름, 문제 번호
+
+        // 반 이름, 문제 번호
         public ToDoProblemRepository() {
             this.todoProblemRepository = new HashMap<>();
-            todoProblemRepository.put("토요일 오전 A반", Arrays.asList("1000","1001", "1002"));
+            todoProblemRepository.put("토요일 오전 A반", Arrays.asList("1000", "1001", "1002"));
             todoProblemRepository.put("토요일 오후 B반", Arrays.asList("1000", "1001", "1002"));
         }
 

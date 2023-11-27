@@ -141,7 +141,7 @@ public class AccountService {
     }
 
     private UserResponseDto createUserResponseDto(Object user, UserResponseDto.UserType userType) {
-        String id, name, academyName, groupName = ""; // groupName은 나중에 수정
+        String id, name, academyName, groupName = "";
 
         if (userType == UserType.teacher) {
             Teacher teacher = (Teacher) user;

@@ -19,7 +19,7 @@ public class StudentProblemRepository {
         studentProblemJpaRepository.save(studentProblem);
     }
 
-    public List<StudentProblem> findByStudent(Student student){
+    public Optional<List<StudentProblem>> findByStudent(Student student){
         return studentProblemJpaRepository.findByStudent(student);
     }
 }

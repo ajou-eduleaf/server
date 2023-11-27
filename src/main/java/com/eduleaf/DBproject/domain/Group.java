@@ -33,9 +33,27 @@ public class Group {
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     private final List<Lesson> lessons = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
+
     @Builder
-    public Group(String name, Academy academy) {
+    public Group(String name, Academy academy, Teacher teacher) {
         this.name = name;
         this.academy = academy;
+        this.teacher = teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public void addStudent(Student student) {
+        students.add(student);
+        student.setGroup(this);
+    }
+
+    public void addLesson(Lesson lesson){
+        lessons.add(lesson);
     }
 }

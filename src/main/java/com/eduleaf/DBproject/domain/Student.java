@@ -62,4 +62,8 @@ public class Student {
         this.academy = academy;
         this.parent = parent;
     }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }

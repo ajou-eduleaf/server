@@ -17,7 +17,7 @@ public class StudentProblem {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", nullable = false)
+    @JoinColumn(name = "boj_id", nullable = false)
     private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,7 +25,7 @@ public class StudentProblem {
     private Problem problem;
 
     @Builder
-    public StudentProblem(int id, Student student, Problem problem) {
+    public StudentProblem(Student student, Problem problem) {
         this.student = student;
         this.problem = problem;
     }

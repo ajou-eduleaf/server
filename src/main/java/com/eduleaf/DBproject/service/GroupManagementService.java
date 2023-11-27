@@ -8,7 +8,6 @@ import com.eduleaf.DBproject.dto.GroupMemberSettingForm;
 import com.eduleaf.DBproject.dto.GroupMembersDto;
 import com.eduleaf.DBproject.dto.LessonSettingForm;
 import com.eduleaf.DBproject.repository.group.GroupRepository;
-import com.eduleaf.DBproject.repository.lesson.LessonJpaRepository;
 import com.eduleaf.DBproject.repository.lesson.LessonRepository;
 import com.eduleaf.DBproject.repository.student.StudentRepository;
 import com.eduleaf.DBproject.repository.teacher.TeacherRepository;
@@ -52,7 +51,7 @@ public class GroupManagementService {
 
         // 학생 조회
         for (String studentBojId : groupMemberSettingForm.getStudentBojId()) {
-            Student student = studentRepository.findStudentByBojId(studentBojId).orElseThrow(() -> {
+            Student student = studentRepository.findByBojId(studentBojId).orElseThrow(() -> {
                 throw new IllegalStateException("존재하지 않는 학생입니다.");
             });
             group.addStudent(student);

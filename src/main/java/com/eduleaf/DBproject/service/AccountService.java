@@ -99,7 +99,7 @@ public class AccountService {
                     throw new IllegalStateException("존재하지 않는 반입니다.");
                 });
 
-        studentRepository.findStudentByBojId(studentSignUpFormDto.getBojId())
+        studentRepository.findByBojId(studentSignUpFormDto.getBojId())
                 .ifPresent((student) -> {
                     throw new IllegalStateException("이미 존재하는 학생입니다.");
                 });
@@ -141,7 +141,7 @@ public class AccountService {
     }
 
     private UserResponseDto createUserResponseDto(Object user, UserResponseDto.UserType userType) {
-        String id, name, academyName, groupName = ""; // groupName은 나중에 수정
+        String id, name, academyName, groupName = "";
 
         if (userType == UserType.teacher) {
             Teacher teacher = (Teacher) user;

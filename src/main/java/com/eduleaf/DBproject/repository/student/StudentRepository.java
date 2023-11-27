@@ -13,16 +13,15 @@ public class StudentRepository {
         this.studentJpaRepository = studentJpaRepository;
     }
 
-    public Student save(final Student student) {
+    public Student save(Student student) {
         return studentJpaRepository.save(student);
     }
 
-    public Optional<Student> findStudentByBojId(final String bojId) {
-        return studentJpaRepository.findStudentByBojId(bojId);
+    public Optional<Student> findByBojId(String bojId) {
+        return studentJpaRepository.findByBojId(bojId);
     }
 
-    public Optional<Student> findStudentByStudentId(final String studentId) {
+    public Optional<Student> findStudentByStudentId(String studentId) {
         return studentJpaRepository.findStudentByStudentId(studentId);
     }
-
 }

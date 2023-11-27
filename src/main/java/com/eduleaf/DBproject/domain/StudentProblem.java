@@ -1,6 +1,7 @@
 package com.eduleaf.DBproject.domain;
 
 import jakarta.persistence.*;
+import java.util.Date;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,9 +25,13 @@ public class StudentProblem {
     @JoinColumn(name = "problem_id", nullable = false)
     private Problem problem;
 
+    @Column
+    private Date solvedDate;
+
     @Builder
-    public StudentProblem(int id, Student student, Problem problem) {
+    public StudentProblem(Student student, Problem problem) {
         this.student = student;
         this.problem = problem;
+        this.solvedDate = new Date();
     }
 }

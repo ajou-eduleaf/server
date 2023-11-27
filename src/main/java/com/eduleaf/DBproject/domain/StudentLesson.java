@@ -33,4 +33,8 @@ public class StudentLesson {
         this.student = student;
         this.lesson = lesson;
     }
+
+    public void toggleAttendance() {
+        this.attendance = !this.attendance;
+    }
 }

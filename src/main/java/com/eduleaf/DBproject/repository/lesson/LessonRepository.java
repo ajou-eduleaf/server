@@ -1,6 +1,8 @@
 package com.eduleaf.DBproject.repository.lesson;
 
+import com.eduleaf.DBproject.domain.Group;
 import com.eduleaf.DBproject.domain.Lesson;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +22,7 @@ public class LessonRepository {
         return lessonJpaRepository.findById(lessonId);
     }
 
+    public Optional<List<Lesson>> findAllByGroup(Group group){
+        return lessonJpaRepository.findAllByGroup(group);
+    }
 }

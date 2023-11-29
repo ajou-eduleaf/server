@@ -4,6 +4,7 @@ import com.eduleaf.DBproject.domain.Group;
 import com.eduleaf.DBproject.domain.Lesson;
 import com.eduleaf.DBproject.domain.Student;
 import com.eduleaf.DBproject.domain.Teacher;
+import com.eduleaf.DBproject.dto.AllLessonInfoOfGroup;
 import com.eduleaf.DBproject.dto.GroupMemberSettingForm;
 import com.eduleaf.DBproject.dto.GroupMembersDto;
 import com.eduleaf.DBproject.dto.LessonSettingForm;
@@ -13,6 +14,7 @@ import com.eduleaf.DBproject.repository.student.StudentRepository;
 import com.eduleaf.DBproject.repository.teacher.TeacherRepository;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,5 +99,26 @@ public class GroupManagementService {
             calendar.add(Calendar.DATE, 7);
         }
         groupRepository.save(group);
+    }
+
+    public AllLessonInfoOfGroup getAllLessonsInfo(String groupName){
+        Group group = groupRepository.findGroupByName(groupName).orElseThrow(
+                () -> {
+                    throw new IllegalStateException("존재하지 않는 그룹입니다.");
+                }
+        );
+
+        List<Lesson> lessons = lessonRepository.findAllByGroup(group).orElseThrow(
+                () -> {
+                    throw new IllegalStateException("수업이 존재하지 않습니다.");
+                }
+        );
+
+        AllLessonInfoOfGroup lessonInfoOfGroup = AllLessonInfoOfGroup.builder()
+                .groupName(groupName)
+                .allLessons(lessons)
+                .build();
+
+        return lessonInfoOfGroup;
     }
 }

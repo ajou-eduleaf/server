@@ -1,5 +1,7 @@
 package com.eduleaf.DBproject.controller;
 
+import com.eduleaf.DBproject.domain.Lesson;
+import com.eduleaf.DBproject.dto.AllLessonInfoOfGroup;
 import com.eduleaf.DBproject.dto.GroupMemberSettingForm;
 import com.eduleaf.DBproject.dto.GroupMembersDto;
 import com.eduleaf.DBproject.dto.LessonSettingForm;
@@ -40,5 +42,10 @@ public class GroupManagementController {
     public String addLessonsToGroup(@PathVariable String groupName, @RequestBody LessonSettingForm lessonSettingForm){
         groupManagementService.addLessonsToGroup(groupName, lessonSettingForm);
         return groupName + " 반에 수업들이 등록되었습니다.";
+    }
+
+    @GetMapping("{groupName}/lessons")
+    public AllLessonInfoOfGroup getAllLessonsByGroupName(@PathVariable String groupName){
+        return groupManagementService.getAllLessonsInfo(groupName);
     }
 }

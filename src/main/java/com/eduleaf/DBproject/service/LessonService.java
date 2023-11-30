@@ -51,12 +51,12 @@ public class LessonService {
         this.parentRepository = parentRepository;
     }
 
-    public void toggleStudentAttendanceOfLesson(int lessonId, String studentBojId) {
+    public void toggleStudentAttendanceOfLesson(int lessonId, String studentId) {
         Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> {
             throw new IllegalArgumentException("존재하지 않는 수업입니다.");
         });
 
-        Student student = studentRepository.findByBojId(studentBojId).orElseThrow(() -> {
+        Student student = studentRepository.findStudentByStudentId(studentId).orElseThrow(() -> {
             throw new IllegalArgumentException("존재하지 않는 학생입니다.");
         });
 

@@ -36,10 +36,10 @@ public class LessonController {
         return problemId + "번 문제가 " + lessonId + " 수업에 등록되었습니다.";
     }
 
-    @PatchMapping("/{lessonId}/attendance/{studentBojId}")
-    public String toggleStudentAttendanceOfLesson(@PathVariable int lessonId, @PathVariable String studentBojId) {
-        lessonService.toggleStudentAttendanceOfLesson(lessonId, studentBojId);
-        return studentBojId + " 학생의 " + lessonId + " 수업 출석 상태가 변경되었습니다.";
+    @PatchMapping("/{lessonId}/attendance/{studentId}")
+    public String toggleStudentAttendanceOfLesson(@PathVariable int lessonId, @PathVariable String studentId) {
+        lessonService.toggleStudentAttendanceOfLesson(lessonId, studentId);
+        return studentId + " 학생의 " + lessonId + " 수업 출석 상태가 변경되었습니다.";
     }
 
     @PostMapping("/{lessonId}/register/group/{groupName}")

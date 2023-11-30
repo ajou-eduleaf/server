@@ -80,9 +80,10 @@ public class CrawlingService {
                     return problem;
                 });
 
-                if (!studentSolvedProblems.contains(newProblem)) {
+                if (!isStudentProblemExist(studentSolvedProblems, student, newProblem)) {
                     StudentProblem studentProblem = new StudentProblem(student, newProblem);
                     studentProblemRepository.save(studentProblem);
+                    studentSolvedProblems.add(studentProblem);
                 }
             }
         }
@@ -103,5 +104,9 @@ public class CrawlingService {
         }).toList();
 
         return solvedProblems;
+    }
+
+    private boolean isStudentProblemExist(List<StudentProblem> studentSolvedProblems, Student student, Problem problem) {
+        return studentSolvedProblems.stream().anyMatch(sp -> sp.getStudent().equals(student) && sp.getProblem().equals(problem));
     }
 }

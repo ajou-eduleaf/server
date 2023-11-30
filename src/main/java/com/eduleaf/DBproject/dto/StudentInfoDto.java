@@ -11,9 +11,9 @@ public class StudentInfoDto {
     private List<Integer> todayProblems;
     private List<Integer> solvedProblems;
     private List<Integer> unsolvedProblems;
-    private boolean isAttendance;
+    private Boolean isAttendance;
     private String groupName;
-    private boolean isFire;
+    private Boolean isFire;
 
     @Builder
     public StudentInfoDto(String bojId, String name, ProblemSolvingStatusDto problemSolvingStatusDto, boolean isAttendance, String groupName) {

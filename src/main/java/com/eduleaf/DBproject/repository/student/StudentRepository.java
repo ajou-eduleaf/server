@@ -1,6 +1,8 @@
 package com.eduleaf.DBproject.repository.student;
 
+import com.eduleaf.DBproject.domain.Group;
 import com.eduleaf.DBproject.domain.Student;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +25,9 @@ public class StudentRepository {
 
     public Optional<Student> findStudentByStudentId(String studentId) {
         return studentJpaRepository.findStudentByStudentId(studentId);
+    }
+
+    public List<Group> findGroupsByStudent (Student student){
+        return studentJpaRepository.findGroupsByStudent(student);
     }
 }

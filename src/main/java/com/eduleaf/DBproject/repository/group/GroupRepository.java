@@ -1,6 +1,8 @@
 package com.eduleaf.DBproject.repository.group;
 
 import com.eduleaf.DBproject.domain.Group;
+import com.eduleaf.DBproject.domain.Teacher;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +21,10 @@ public class GroupRepository {
 
     public Optional<Group> findGroupByName(String name){
         return groupJpaRepository.findGroupByName(name);
+    }
+
+    public List<Group> findGroupsByTeacher(Teacher teacher){
+        return groupJpaRepository.findGroupsByTeacher(teacher);
     }
 }
 

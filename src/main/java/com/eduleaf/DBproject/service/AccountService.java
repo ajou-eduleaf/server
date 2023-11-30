@@ -18,6 +18,7 @@ import com.eduleaf.DBproject.repository.group.GroupRepository;
 import com.eduleaf.DBproject.repository.parent.ParentRepository;
 import com.eduleaf.DBproject.repository.student.StudentRepository;
 import com.eduleaf.DBproject.repository.teacher.TeacherRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 
@@ -147,16 +148,28 @@ public class AccountService {
             Teacher teacher = (Teacher) user;
             id = teacher.getTeachId();
             name = teacher.getName();
+            List<Group> group = groupRepository.findGroupsByTeacher(teacher);
+            if (group.size() > 0) {
+                groupName = group.get(0).getName();
+            }
             academyName = teacher.getAcademy().getName();
         } else if (userType == UserType.student) {
             Student student = (Student) user;
             id = student.getStudentId();
             name = student.getName();
+            List<Group> group = studentRepository.findGroupsByStudent(student);
+            if (group.size() > 0) {
+                groupName = group.get(0).getName();
+            }
             academyName = student.getAcademy().getName();
         } else {
             Parent parent = (Parent) user;
             id = parent.getParentId();
             name = parent.getName();
+            List<Group> group = studentRepository.findGroupsByStudent(parent.getStudent());
+            if (group.size() > 0) {
+                groupName = group.get(0).getName();
+            }
             academyName = parent.getStudent().getAcademy().getName();
         }
 

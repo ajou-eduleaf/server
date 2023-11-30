@@ -140,6 +140,9 @@ public class LessonService {
         String type = lessonInfoRequestFormDto.getType();
 
         if (type.equals("teacher")) {
+            int maxSolvedProblems = 0;
+            StudentInfoDto maxSolvedStudentInfoDto = null;
+            String maxSolvedStudentId = null;
             for (StudentLesson studentLesson : studentLessonList) {
 
                 boolean attendance = studentLesson.isAttendance();
@@ -159,7 +162,16 @@ public class LessonService {
                         .groupName(groupName)
                         .build();
 
+                if (problemSolvingStatusDto.getSolvedProblems().size() > maxSolvedProblems) {
+                    maxSolvedProblems = problemSolvingStatusDto.getSolvedProblems().size();
+                    maxSolvedStudentInfoDto = studentInfoDto;
+                    maxSolvedStudentId = studentId;
+                }
+
                 lessonInfoResponseDto.addStudentInfo(studentId, studentInfoDto);
+            }
+            if (maxSolvedStudentInfoDto != null) {
+                lessonInfoResponseDto.getStudentInfo().get(maxSolvedStudentId).makeFire();
             }
         } else if (type.equals("student")) {
             String id = lessonInfoRequestFormDto.getId();

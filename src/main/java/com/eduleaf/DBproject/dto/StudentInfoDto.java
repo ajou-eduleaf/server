@@ -13,6 +13,7 @@ public class StudentInfoDto {
     private List<Integer> unsolvedProblems;
     private boolean isAttendance;
     private String groupName;
+    private boolean isFire;
 
     @Builder
     public StudentInfoDto(String bojId, String name, ProblemSolvingStatusDto problemSolvingStatusDto, boolean isAttendance, String groupName) {
@@ -23,5 +24,10 @@ public class StudentInfoDto {
         this.unsolvedProblems = problemSolvingStatusDto.getUnsolvedProblems();
         this.isAttendance = isAttendance;
         this.groupName = groupName;
+        this.isFire = false;
+    }
+
+    public void makeFire() {
+        this.isFire = true;
     }
 }

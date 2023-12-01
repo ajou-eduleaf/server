@@ -8,6 +8,7 @@ import com.eduleaf.DBproject.dto.AllLessonInfoOfGroup;
 import com.eduleaf.DBproject.dto.GroupMemberSettingForm;
 import com.eduleaf.DBproject.dto.GroupMembersDto;
 import com.eduleaf.DBproject.dto.LessonSettingForm;
+import com.eduleaf.DBproject.dto.ResponseMessageDto;
 import com.eduleaf.DBproject.repository.group.GroupRepository;
 import com.eduleaf.DBproject.repository.lesson.LessonRepository;
 import com.eduleaf.DBproject.repository.student.StudentRepository;
@@ -35,7 +36,7 @@ public class GroupManagementService {
     }
 
     @Transactional
-    public void settingGroupMember(String groupName, GroupMemberSettingForm groupMemberSettingForm) {
+    public ResponseMessageDto settingGroupMember(String groupName, GroupMemberSettingForm groupMemberSettingForm) {
 
         System.out.println("teacherId = " + groupMemberSettingForm.getTeacherId());
         // 반 조회
@@ -59,6 +60,9 @@ public class GroupManagementService {
             group.addStudent(student);
         }
         groupRepository.save(group);
+        return ResponseMessageDto.builder()
+                .message(groupName + " 반에 선생님과 학생이 등록되었습니다.")
+                .build();
     }
 
     public GroupMembersDto getGroupInfo(String groupName) {
@@ -76,7 +80,7 @@ public class GroupManagementService {
 
 
     @Transactional
-    public void addLessonsToGroup(String groupName, LessonSettingForm lessonSettingForm) {
+    public ResponseMessageDto addLessonsToGroup(String groupName, LessonSettingForm lessonSettingForm) {
         Group group = groupRepository.findGroupByName(groupName).orElseThrow(() -> {
             throw new IllegalStateException("존재하지 않는 반입니다.");
         });
@@ -99,6 +103,9 @@ public class GroupManagementService {
             calendar.add(Calendar.DATE, 7);
         }
         groupRepository.save(group);
+        return ResponseMessageDto.builder()
+                .message(groupName + " 반에 수업이 등록되었습니다.")
+                .build();
     }
 
     public AllLessonInfoOfGroup getAllLessonsInfo(String groupName){

@@ -10,6 +10,7 @@ import com.eduleaf.DBproject.domain.StudentProblem;
 import com.eduleaf.DBproject.dto.LessonInfoRequestFormDto;
 import com.eduleaf.DBproject.dto.LessonInfoResponseDto;
 import com.eduleaf.DBproject.dto.ProblemSolvingStatusDto;
+import com.eduleaf.DBproject.dto.ResponseMessageDto;
 import com.eduleaf.DBproject.dto.StudentInfoDto;
 import com.eduleaf.DBproject.repository.group.GroupRepository;
 import com.eduleaf.DBproject.repository.lesson.LessonRepository;
@@ -51,7 +52,7 @@ public class LessonService {
         this.parentRepository = parentRepository;
     }
 
-    public void toggleStudentAttendanceOfLesson(int lessonId, String studentId) {
+    public ResponseMessageDto toggleStudentAttendanceOfLesson(int lessonId, String studentId) {
         Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> {
             throw new IllegalArgumentException("존재하지 않는 수업입니다.");
         });
@@ -67,9 +68,12 @@ public class LessonService {
 
         studentLesson.toggleAttendance();
         studentLessonRepository.save(studentLesson);
+        return ResponseMessageDto.builder()
+                .message(studentId + " 학생의 출석 여부가 변경되었습니다.")
+                .build();
     }
 
-    public void addStudentToLesson(int lessonId, String studentBojId) {
+    public ResponseMessageDto addStudentToLesson(int lessonId, String studentBojId) {
         Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> {
             throw new IllegalArgumentException("존재하지 않는 수업입니다.");
         });
@@ -80,9 +84,12 @@ public class LessonService {
 
         StudentLesson studentLesson = new StudentLesson(false, student, lesson);
         studentLessonRepository.save(studentLesson);
+        return ResponseMessageDto.builder()
+                .message(studentBojId + " 학생이 " + lessonId + " 수업에 등록되었습니다.")
+                .build();
     }
 
-    public void addAllStudentsInGroupToLesson(String groupName, int lessonId) {
+    public ResponseMessageDto addAllStudentsInGroupToLesson(String groupName, int lessonId) {
         Group group = groupRepository.findGroupByName(groupName).orElseThrow(() -> {
             throw new IllegalArgumentException("존재하지 않는 반입니다.");
         });
@@ -95,9 +102,13 @@ public class LessonService {
             StudentLesson studentLesson = new StudentLesson(false, student, lesson);
             studentLessonRepository.save(studentLesson);
         }
+
+        return ResponseMessageDto.builder()
+                .message(groupName + " 반의 학생들이 " + lessonId + " 수업에 등록되었습니다.")
+                .build();
     }
 
-    public void addProblemToLesson(int lessonId, String problemId) {
+    public ResponseMessageDto addProblemToLesson(int lessonId, String problemId) {
         Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> {
             throw new IllegalArgumentException("존재하지 않는 수업입니다.");
         });
@@ -120,6 +131,9 @@ public class LessonService {
 
         LessonProblem lessonProblem = new LessonProblem(lesson, problem);
         lessonProblemRepository.save(lessonProblem);
+        return ResponseMessageDto.builder()
+                .message(problemId + " 문제가 " + lessonId + " 수업에 등록되었습니다.")
+                .build();
     }
 
     @Transactional

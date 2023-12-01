@@ -8,6 +8,7 @@ import com.eduleaf.DBproject.domain.Teacher;
 import com.eduleaf.DBproject.dto.AcademyFormDto;
 import com.eduleaf.DBproject.dto.GroupFormDto;
 import com.eduleaf.DBproject.dto.ParentSignUpFormDto;
+import com.eduleaf.DBproject.dto.ResponseMessageDto;
 import com.eduleaf.DBproject.dto.StudentSignUpFormDto;
 import com.eduleaf.DBproject.dto.TeacherSignUpFormDto;
 import com.eduleaf.DBproject.dto.UserLoginFormDto;
@@ -42,7 +43,7 @@ public class AccountService {
         this.parentRepository = parentRepository;
     }
 
-    public void createAcademy(AcademyFormDto academyFormDto) {
+    public ResponseMessageDto createAcademy(AcademyFormDto academyFormDto) {
         academyRepository.findByAcademyName(academyFormDto.getName())
                 .ifPresent((academy) -> {
                     throw new IllegalStateException("이미 존재하는 학원입니다.");
@@ -50,9 +51,12 @@ public class AccountService {
 
         Academy academy = academyFormDto.toEntity();
         academyRepository.save(academy);
+        return ResponseMessageDto.builder()
+                .message(academyFormDto.getName() + " 학원 등록 완료")
+                .build();
     }
 
-    public void createTeacher(TeacherSignUpFormDto teacherFormDto) {
+    public ResponseMessageDto createTeacher(TeacherSignUpFormDto teacherFormDto) {
         Academy academy = academyRepository.findByAcademyName(teacherFormDto.getAcademyName())
                 .orElseThrow(() -> {
                     throw new IllegalStateException("존재하지 않는 학원입니다.");
@@ -66,9 +70,12 @@ public class AccountService {
         System.out.println("teacherFormDto = " + teacherFormDto.getTeacherId());
         Teacher teacher = teacherFormDto.toEntity(academy);
         teacherRepository.save(teacher);
+        return ResponseMessageDto.builder()
+                .message(teacherFormDto.getName() + " 선생님 등록 완료")
+                .build();
     }
 
-    public void createGroup(GroupFormDto groupFormDto) {
+    public ResponseMessageDto createGroup(GroupFormDto groupFormDto) {
         Academy academy = academyRepository.findByAcademyName(groupFormDto.getAcademyName())
                 .orElseThrow(() -> {
                     throw new IllegalStateException("존재하지 않는 학원입니다.");
@@ -86,10 +93,13 @@ public class AccountService {
 
         Group group = groupFormDto.toEntity(academy, teacher);
         groupRepository.save(group);
+        return ResponseMessageDto.builder()
+                .message(groupFormDto.getName() + "반 등록 완료")
+                .build();
     }
 
 
-    public void createStudent(StudentSignUpFormDto studentSignUpFormDto) {
+    public ResponseMessageDto createStudent(StudentSignUpFormDto studentSignUpFormDto) {
         Academy academy = academyRepository.findByAcademyName(studentSignUpFormDto.getAcademyName())
                 .orElseThrow(() -> {
                     throw new IllegalStateException("존재하지 않는 학원입니다.");
@@ -107,9 +117,12 @@ public class AccountService {
 
         Student student = studentSignUpFormDto.toEntity(academy, group);
         studentRepository.save(student);
+        return ResponseMessageDto.builder()
+                .message(studentSignUpFormDto.getName() + " 학생 등록 완료")
+                .build();
     }
 
-    public void createParent(ParentSignUpFormDto parentSignUpFormDto) {
+    public ResponseMessageDto createParent(ParentSignUpFormDto parentSignUpFormDto) {
 
         Student student = studentRepository.findStudentByStudentId(parentSignUpFormDto.getStudentId())
                 .orElseThrow(() -> {
@@ -117,6 +130,9 @@ public class AccountService {
                 });
         Parent parent = parentSignUpFormDto.toEntity(student);
         parentRepository.save(parent);
+        return ResponseMessageDto.builder()
+                .message(parentSignUpFormDto.getName() + " 학부모 등록 완료")
+                .build();
     }
 
     public UserResponseDto login(UserLoginFormDto userLoginFormDto) {

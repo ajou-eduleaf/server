@@ -2,6 +2,7 @@ package com.eduleaf.DBproject.controller;
 
 import com.eduleaf.DBproject.dto.LessonInfoRequestFormDto;
 import com.eduleaf.DBproject.dto.LessonInfoResponseDto;
+import com.eduleaf.DBproject.dto.ResponseMessageDto;
 import com.eduleaf.DBproject.service.CrawlingService;
 import com.eduleaf.DBproject.service.LessonService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,32 +32,27 @@ public class LessonController {
     }
 
     @PutMapping("/{lessonId}/register/problem/{problemId}")
-    public String addProblemToLesson(@PathVariable int lessonId, @PathVariable String problemId) {
-        lessonService.addProblemToLesson(lessonId, problemId);
-        return problemId + "번 문제가 " + lessonId + " 수업에 등록되었습니다.";
+    public ResponseMessageDto addProblemToLesson(@PathVariable int lessonId, @PathVariable String problemId) {
+        return lessonService.addProblemToLesson(lessonId, problemId);
     }
 
     @PatchMapping("/{lessonId}/attendance/{studentId}")
-    public String toggleStudentAttendanceOfLesson(@PathVariable int lessonId, @PathVariable String studentId) {
-        lessonService.toggleStudentAttendanceOfLesson(lessonId, studentId);
-        return studentId + " 학생의 " + lessonId + " 수업 출석 상태가 변경되었습니다.";
+    public ResponseMessageDto toggleStudentAttendanceOfLesson(@PathVariable int lessonId, @PathVariable String studentId) {
+        return lessonService.toggleStudentAttendanceOfLesson(lessonId, studentId);
     }
 
     @PostMapping("/{lessonId}/register/group/{groupName}")
-    public String addAllStudentsInGroupToLesson(@PathVariable int lessonId, @PathVariable String groupName) {
-        lessonService.addAllStudentsInGroupToLesson(groupName, lessonId);
-        return groupName + " 학생들이 " + lessonId + " 수업에 등록되었습니다.";
+    public ResponseMessageDto addAllStudentsInGroupToLesson(@PathVariable int lessonId, @PathVariable String groupName) {
+        return lessonService.addAllStudentsInGroupToLesson(groupName, lessonId);
     }
 
     @PostMapping("/{lessonId}/register/student/{studentBojId}")
-    public String addStudentsToLesson(@PathVariable int lessonId, @PathVariable String studentBojId) {
-        lessonService.addStudentToLesson(lessonId, studentBojId);
-        return studentBojId + " 학생이 " + lessonId + " 수업에 등록되었습니다.";
+    public ResponseMessageDto addStudentsToLesson(@PathVariable int lessonId, @PathVariable String studentBojId) {
+        return lessonService.addStudentToLesson(lessonId, studentBojId);
     }
 
     @PostMapping("/{lessonId}/refresh")
-    public String crawlLesson(@PathVariable int lessonId) {
-        crawlingService.crawlingWithLessonId(lessonId);
-        return lessonId + " 수업의 정보가 업데이트 되었습니다.";
+    public ResponseMessageDto crawlLesson(@PathVariable int lessonId) {
+        return crawlingService.crawlingWithLessonId(lessonId);
     }
 }

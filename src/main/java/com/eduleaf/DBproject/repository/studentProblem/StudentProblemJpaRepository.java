@@ -23,6 +23,15 @@ public interface StudentProblemJpaRepository extends JpaRepository<StudentProble
     @Query("SELECT sp.student.bojId, COUNT(*) FROM StudentProblem As sp WHERE sp.student.academy.name =:location AND year(sp.solvedDate) = year(now()) AND month(sp.solvedDate) = month(now()) GROUP BY sp.student ORDER BY COUNT(*) DESC")
     List<Object[]> getMonthStudentProblemCount(@Param(value = "location") String location);
 
+    @Query("SELECT s.bojId FROM Student As s LEFT OUTER JOIN StudentProblem AS sp ON s = sp.student WHERE sp.student IS NULL")
+    List<Object[]> getAllStudentProblemZero(@Param(value = "location") String location);
+
+    @Query("SELECT bojId FROM Student WHERE bojId NOT IN (SELECT sp.student.bojId FROM StudentProblem As sp WHERE sp.student.academy.name =:location AND sp.solvedDate = CURDATE() GROUP BY sp.student)")
+    List<Object[]> getTodayStudentProblemZero(@Param(value = "location") String location);
+
+    @Query("SELECT bojId FROM Student WHERE bojId NOT IN (SELECT sp.student.bojId FROM StudentProblem As sp WHERE sp.student.academy.name =:location AND year(sp.solvedDate) = year(now()) AND month(sp.solvedDate) = month(now()) GROUP BY sp.student)")
+    List<Object[]> getMonthStudentProblemZero(@Param(value = "location") String location);
+
     Optional<List<StudentProblem>> findByStudent(Student student);
 
 }

@@ -6,16 +6,16 @@ VALUES ('academy'),
 INSERT INTO teacher (name, teach_id, teach_pw, academy_id)
 VALUES ('나선생', 'nah123', 'nah123!', 1), -- 1 (teacher_id)
        ('안정섭', 'ajs', '1234', 1),       -- 2
-       ('김상훈', 'shk', '1234', 1), -- 3
-       ('강경란', 'kang', 'kang1234', 2), -- 4
-       ('정현지', 'jhz', 'jhz0011', 2), -- 5
-       ('장원영', 'jwy', 'jwy1234', 3), -- 6
+       ('김상훈', 'shk', '1234', 1),       -- 3
+       ('강경란', 'kang', 'kang1234', 2),  -- 4
+       ('정현지', 'jhz', 'jhz0011', 2),    -- 5
+       ('장원영', 'jwy', 'jwy1234', 3),    -- 6
        ('김민주', 'kmj', 'kmj1234', 3); -- 7
 
 INSERT INTO group_table (name, academy_id, teacher_id)
-VALUES ('코뿔소', 1, 1), -- 1 (group_id)
-       ('병아리', 1, 2), -- 2
-       ('불사조', 1, 3), -- 3
+VALUES ('코뿔소', 1, 1),  -- 1 (group_id)
+       ('병아리', 1, 2),  -- 2
+       ('불사조', 1, 3),  -- 3
        ('초등A반', 2, 4), -- 4
        ('초등B반', 2, 5), -- 5
        ('중등A반', 3, 6), -- 6
@@ -43,7 +43,6 @@ VALUES (12, 'sfg1234', '소학생', 'sosongha3', 'ss123!', 1, 3), -- 1  (student
        (15, 'testperson', '이테스트', 'testman', 'testman123', 1, 1), -- 18
        (14, 'iamyou', '난사람', 'iamyou', 'amiyou!', 1, 1), -- 19
        (13, 'heyhey', '김시비', 'kimhey098', '104!104', 1, 1); -- 20
-
 
 
 INSERT INTO parent (name, parent_id, parent_pw, relation, student_id, phone_number)
@@ -228,7 +227,6 @@ VALUES ('파이썬', '2023-12-01', 2), -- 1 (lesson_id)
        ('Scratch', '2024-01-26', 7), -- 9
        ('Scratch', '2024-02-02', 7); -- 70
 
-
 INSERT INTO lesson_problem (lesson_id, problem_id)
 VALUES (1, 1000),
        (1, 1001),
@@ -238,17 +236,41 @@ VALUES (1, 1000),
        (2, 2557),
        (2, 1005),
        (2, 1006),
-       (2, 1007);
+       (2, 1007),
+       (9, 1000),
+       (9, 1001),
+       (9, 1002),
+       (9, 1003),
+       (9, 1004),
+       (9, 1005),
+       (9, 1006),
+       (9, 1007),
+       (9, 9498),
+       (9, 1330),
+       (9, 10172),
+       (9, 10171),
+       (9, 11382),
+       (9, 2588),
+       (9, 2557);
 
 INSERT INTO student_lesson (lesson_id, student_id, attendance)
-VALUES (1, 5, true), (1, 6, true),
-       (2, 5, false), (2, 6, false),
-       (3, 5, false), (3, 6, false),
-       (4, 5, false), (4, 6, false),
-       (5, 5, false), (5, 6, false),
-       (6, 5, false), (6, 6, false),
-       (7, 5, false), (7, 6, false),
-       (8, 5, false), (8, 6, false);
+VALUES (1, 5, true),
+       (1, 6, true),
+       (2, 5, false),
+       (2, 6, false),
+       (3, 5, false),
+       (3, 6, false),
+       (4, 5, false),
+       (4, 6, false),
+       (5, 5, false),
+       (5, 6, false),
+       (6, 5, false),
+       (6, 6, false),
+       (7, 5, false),
+       (7, 6, false),
+       (8, 5, false),
+       (8, 6, false),
+       (9, 1, true);
 
 INSERT INTO student_problem (student_id, problem_id, solved_date)
 VALUES (1, 1000, '2023-11-01'), (1, 1001, '2023-12-01'),

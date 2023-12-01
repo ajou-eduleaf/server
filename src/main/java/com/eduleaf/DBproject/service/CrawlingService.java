@@ -6,6 +6,7 @@ import com.eduleaf.DBproject.domain.Problem;
 import com.eduleaf.DBproject.domain.Student;
 import com.eduleaf.DBproject.domain.StudentLesson;
 import com.eduleaf.DBproject.domain.StudentProblem;
+import com.eduleaf.DBproject.dto.ResponseMessageDto;
 import com.eduleaf.DBproject.repository.lesson.LessonRepository;
 import com.eduleaf.DBproject.repository.lessonproblem.LessonProblemRepository;
 import com.eduleaf.DBproject.repository.problem.ProblemRepository;
@@ -42,7 +43,7 @@ public class CrawlingService {
     }
 
     @Transactional
-    public void crawlingWithLessonId(int lessonId) {
+    public ResponseMessageDto crawlingWithLessonId(int lessonId) {
         Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> {
             throw new IllegalArgumentException("존재하지 않는 수업입니다.");
         });
@@ -59,6 +60,10 @@ public class CrawlingService {
             String studentBojId = studentLesson.getStudent().getBojId();
             crawlingWithStudentBojId(studentBojId, todayProblems);
         }
+
+        return ResponseMessageDto.builder()
+                .message(lessonId + "의 수업 정보 새로고침(크롤링) 완료")
+                .build();
     }
 
     private void crawlingWithStudentBojId(String studentBojId, List<Integer> todayProblems) {

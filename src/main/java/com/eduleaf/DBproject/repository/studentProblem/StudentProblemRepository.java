@@ -4,6 +4,7 @@ import com.eduleaf.DBproject.domain.Academy;
 import com.eduleaf.DBproject.domain.Student;
 import com.eduleaf.DBproject.domain.StudentProblem;
 import com.eduleaf.DBproject.repository.academy.AcademyJpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,6 +33,18 @@ public class StudentProblemRepository {
 
     public List<Object[]> getMonthStudentProblemCount(String location){
         return studentProblemJpaRepository.getMonthStudentProblemCount(location);
+    }
+
+    public List<Object[]> getAllStudentProblemZero(String location){
+        return studentProblemJpaRepository.getAllStudentProblemZero(location);
+    }
+
+    public List<Object[]> getTodayStudentProblemZero(String location){
+        return studentProblemJpaRepository.getTodayStudentProblemZero(location);
+    }
+
+    public List<Object[]> getMonthStudentProblemZero(String location){
+        return studentProblemJpaRepository.getMonthStudentProblemZero(location);
     }
 
     public Optional<List<StudentProblem>> findByStudent(Student student){
